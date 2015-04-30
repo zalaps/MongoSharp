@@ -52,6 +52,7 @@
     <Compile Include="Entity\SurveyFeedback.cs" />
     <Compile Include="Entity\Survey.cs" />
     <Compile Include="Entity\Customer.cs" />
+    <Compile Include="MongoPlay\LetsStart.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
