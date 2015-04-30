@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using MongoConsole.Entity;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace MongoConsole.MongoPlay
 
         public LetsStart(string connString, string dbname)
         {
+            Console.WriteLine("--> Setting up init data");
             this.ConnString = connString;
             this.DBName = dbname;
 
@@ -38,6 +41,8 @@ namespace MongoConsole.MongoPlay
             Console.WriteLine("--> Creating csharp db");
             this.mDB = mServer.GetDatabase(this.DBName);
             Console.WriteLine("--> DB Name: {0}", this.mDB.Name);
+            Console.WriteLine("Press any key to continue...");
+            Console.Read();
         }
 
         public void GetAllDBNames()
@@ -51,6 +56,8 @@ namespace MongoConsole.MongoPlay
                 /* csharp db not in the list? it wont come till first collection is created.
                  * skip to next section - create collection - come back here to get printed! */
             }
+            Console.WriteLine("Press any key to continue...");
+            Console.Read();
         }
 
         public void DropDB()
@@ -71,11 +78,13 @@ namespace MongoConsole.MongoPlay
                     dbToDrop.Drop();
                 }
             }
+            Console.WriteLine("Press any key to continue...");
+            Console.Read();
         }
 
         public void CreateCollections()
         {
-            if(this.mDB == null)
+            if (this.mDB == null)
                 this.mDB = mServer.GetDatabase(this.DBName);
 
             /* Collection: It is 'collection' of documnets */
@@ -90,6 +99,9 @@ namespace MongoConsole.MongoPlay
              * These will be used later. */
             this.mDB.CreateCollection("survey");
             this.mDB.CreateCollection("surveyfeedback");
+            this.mDB.CreateCollection("collectiontobedeleted");
+            Console.WriteLine("Press any key to continue...");
+            Console.Read();
         }
 
         public void GetAllCollectionFromDB()
@@ -103,6 +115,42 @@ namespace MongoConsole.MongoPlay
             {
                 Console.WriteLine(name);
             }
-        }        
+            Console.WriteLine("Press any key to continue...");
+            Console.Read();
+        }
+
+        public void DropCollection()
+        {
+            if (this.mDB == null)
+                this.mDB = mServer.GetDatabase(this.DBName);
+
+            /* CollectionExists methods check whether collection exidts in DB */
+            if (this.mDB.CollectionExists("collectiontobedeleted"))
+            {
+                Console.WriteLine("--> Collection exists & will be dropped");
+                this.mDB.DropCollection("collectiontobedeleted");
+            }
+            else
+                Console.WriteLine("--> Collection was not found");
+            Console.WriteLine("Press any key to continue...");
+            Console.Read();
+        }
+
+        public void InsertDocument()
+        {
+            if (this.mDB == null)
+                this.mDB = mServer.GetDatabase(this.DBName);
+
+            Console.WriteLine("--> Insert collection by entity template");
+
+            /* Get collection in which documents will be inserted */
+            MongoCollection<Customer> customers = this.mDB.GetCollection<Customer>("customer");
+
+            for (int i = 1; i <= 9; i++)
+            {
+                var cust = new Customer(i.ToString());
+                customers.Insert(cust);
+            }
+        }
     }
 }

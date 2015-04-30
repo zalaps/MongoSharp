@@ -21,11 +21,19 @@ namespace MongoConsole
             /* Instantiating start object */
             var letsStart = new LetsStart(connString, dbname);
             
+            /* DB */
             letsStart.CreateDB();
             letsStart.GetAllDBNames();
             letsStart.DropDB();
+
+            /* Collection */
             letsStart.CreateCollections();
-            letsStart.GetAllCollectionFromDB();        
+            letsStart.GetAllCollectionFromDB();
+            letsStart.DropCollection();
+
+            /* Documents */
+            letsStart.InsertDocument();
+
           
         }
     }
