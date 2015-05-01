@@ -152,5 +152,25 @@ namespace MongoConsole.MongoPlay
                 customers.Insert(cust);
             }
         }
+
+        public void ReadDocuments()
+        {
+            if (this.mDB == null)
+                this.mDB = mServer.GetDatabase(this.DBName);
+           
+            MongoCollection<Customer> customers = this.mDB.GetCollection<Customer>("customer");
+
+            /* FindAll */
+            Console.WriteLine("--> FindAll documents from collection");            
+            foreach (var c in customers.FindAll())
+            {
+                Console.WriteLine("Customer with name {0}, email {1} & contact {2}", c.Name, c.Email, c.Contact);                 
+            }
+
+            /* FindOne */
+            Console.WriteLine("--> FindOne document from collection");    
+            var cust = customers.FindOne();
+            Console.WriteLine("Only one Customer with name {0}, email {1} & contact {2}", cust.Name, cust.Email, cust.Contact);
+        }
     }
 }
