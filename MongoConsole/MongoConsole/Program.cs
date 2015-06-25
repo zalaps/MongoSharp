@@ -13,8 +13,7 @@ namespace MongoConsole
     class Program
     {
         static void Main(string[] args)
-        {
-            
+        {            
             string connString = "mongodb://localhost";
             string dbname = "csharp";
 
